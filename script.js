@@ -1,4 +1,6 @@
-const next = document.querySelector('.next')
+
+// phần bình luận của trang chủ
+{const next = document.querySelector('.next')
 const prev = document.querySelector('.prev')
 const comment = document.querySelector('#list-comment')
 const commentItem = document.querySelectorAll('#list-comment .item')
@@ -26,7 +28,16 @@ prev.addEventListener('click', function (event) {
   comment.style.transform = `translateY(${translateY}px)`
   count++
 })
+// Cách thực hiện:
 
+// - Dùng JavaScript để lắng nghe sự kiện click của 2 button "next" và "prev"
+
+// - Khi người dùng click vào button "next" hoặc "prev" thì chúng ta kiểm tra xem có thể di chuyển đến comment tiếp theo hay không, nếu không thì hiển thị thông báo "Xem hết bình luận"
+
+// - Sau đó, dùng CSS để thực hiện hiệu ứng di chuyển bình luận lên hoặc xuống bằng cách thay đổi thuộc tính translateY của element chứa bình luận, kết hợp với việc tăng/giảm biến số count để theo dõi số lượng bình luận còn lại.
+}
+
+{
 const products = document.querySelectorAll('#listproducts .item')
 
 products.forEach(product => {
@@ -41,43 +52,69 @@ products.forEach(product => {
     detail.style.display = 'none'
   })
 })
+// Mục đích:
 
-function them(button){
-  // Sao chép node mẹ của button
-  var row = button.parentElement.parentElement.cloneNode(true);
-  // Sửa lại innerText và thêm sự kiện click cho button Xóa
-  var btnXoa = row.getElementsByTagName("button")[0];
-  btnXoa.innerText = "Xóa";
-  btnXoa.setAttribute('onclick', 'xoa(this)');
-  // Thêm node mới đã sửa vào table#cart
-  document.getElementById("cart").appendChild(row);
-  // Tính tổng tiền giỏ hàng
-  tinhTong();
+// - Tạo hiệu ứng hiển thị thông tin chi tiết sản phẩm khi người dùng rê chuột vào sản phẩm.
+
+// - Tự động ẩn thông tin chi tiết sản phẩm khi người dùng di chuyển chuột ra khỏi sản phẩm.
+
+// Cách thực hiện:
+
+// - Sử dụng phương thức `querySelectorAll` để lấy tất cả các sản phẩm có trong danh sách sản phẩm và lắng nghe sự kiện `mouseover` và `mouseout` trên từng sản phẩm.
+
+// - Khi người dùng rê chuột vào một sản phẩm (sự kiện `mouseover`) thì phần chi tiết sản phẩm (element có class là "product-detail") của sản phẩm đó sẽ được hiển thị (`display: block`) bằng thuộc tính style của phần tử đó.
+
+// - Khi người dùng di chuyển chuột ra khỏi sản phẩm (sự kiện `mouseout`), thì phần chi tiết sản phẩm sẽ bị ẩn đi (`display: none`) bằng cách sử dụng thuộc tính style của phần tử "product-detail".
+
+// - Với mỗi sản phẩm, đoạn mã dùng vòng lặp forEach để lắng nghe sự kiện các sự kiện trên sản phẩm đó, giảm thiểu mã lặp lại và tăng tính tương tác trên trang sản phẩm.
 }
+{
+  const cart = document.querySelector('#cart');
+  const priceTags = document.querySelectorAll('.price');
+  const tong = document.getElementById('tong');
+  let total = 0;
 
-function xoa(button){
-  // Tìm node chứa nút Xóa được click
-  var row = button.parentElement.parentElement;
-  // Xóa node đó khỏi table#cart
-  document.getElementById("cart").removeChild(row);
-  // Tính lại tổng tiền giỏ hàng
-  tinhTong();
-}
+  function them(button) {
+    // Lấy thông tin sản phẩm được chọn
+    const item = button.parentNode.parentNode;
+    const imgSrc = item.querySelector('img').src;
+    const name = item.querySelector('.name').innerText;
+    const price = parseInt(item.querySelector('.price').innerText);
 
-function tinhTong(){
-  // Lấy danh sách các thẻ trong table#cart
-  var cart = document.getElementById("cart");
-  var rows = cart.getElementsByTagName("item");
-  // Duyệt danh sách và tính tổng giá tiền
-  var tong = 0;
-  for (var i = 0; i < rows.length; i++) {
-    var cells = rows[i].getElementsByTagName("p");
-    var price = cells[1].innerText.substr(1);
-    tong += 1*price;
+    // Tạo trước dòng trong bảng giỏ hàng
+    const row = document.createElement('tr')
+    const imgCell = document.createElement('td');
+    imgCell.innerHTML = `<img src="${imgSrc}" class="item-no-cart-img"></img>`;
+    const nameCell = document.createElement('td');
+    nameCell.innerText = name;
+    const priceCell = document.createElement('td');
+    priceCell.innerText = price;
+    const deleteBtnCell = document.createElement('td');
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = 'Xóa';
+    deleteBtn.addEventListener('click', function() {
+      // Xóa dòng tương ứng khi bấm nút Xóa
+      cart.removeChild(row);
+      total -= price;
+      tong.innerText = total;
+    });
+    deleteBtnCell.appendChild(deleteBtn);
+    row.appendChild(imgCell);
+    row.appendChild(nameCell);
+    row.appendChild(priceCell);
+    row.appendChild(deleteBtnCell);
+
+    // Thêm dòng vào giỏ hàng
+    cart.appendChild(row);
+
+    // Cập nhật tổng số tiền
+    total += price;
+    tong.innerText = total;
   }
-  // Hiển thị tổng tiền
-  document.getElementById("tong").innerText = tong;
+  
 }
+
+{
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(showPosition);
 } else {
@@ -119,3 +156,73 @@ let timer = setInterval(function() {
     document.getElementById("flashsale").innerText = `Còn lại: ${hours} giờ, ${minutes} phút và ${seconds} giây`
   }
 }, interval);
+
+}
+
+
+{
+{// Tìm phần tử muốn cuộn đến
+const targetElement = document.querySelector('#wp-products',);
+// Thêm sự kiện "click" vào phần tử kích hoạt
+document.querySelector('#SP',).addEventListener('click', function() {
+  // Cuộn đến phần tử chỉ định
+  targetElement.scrollIntoView({ behavior: 'smooth' });
+});}
+
+{
+// Tìm phần tử muốn cuộn đến
+const targetElement = document.querySelector('#comment',);
+// Thêm sự kiện "click" vào phần tử kích hoạt
+document.querySelector('#BL',).addEventListener('click', function() {
+  // Cuộn đến phần tử chỉ định
+  targetElement.scrollIntoView({ behavior: 'smooth' });
+});
+}
+
+{
+  // Tìm phần tử muốn cuộn đến
+  const targetElement = document.querySelector('.box',);
+  // Thêm sự kiện "click" vào phần tử kích hoạt
+  document.querySelector('#LH',).addEventListener('click', function() {
+    // Cuộn đến phần tử chỉ định
+    targetElement.scrollIntoView({ behavior: 'smooth' });
+  });
+  }
+
+
+
+  {
+    // Tìm phần tử muốn cuộn đến
+    const targetElement = document.querySelector('#wp-products',);
+    // Thêm sự kiện "click" vào phần tử kích hoạt
+    document.querySelector('#MN',).addEventListener('click', function() {
+      // Cuộn đến phần tử chỉ định
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    });
+    }
+  }
+
+
+
+
+  {
+  function toggleCart() {
+    var cartContainer = document.getElementById("item-list-no-cart-msg");
+    if (cartContainer.style.display === "none") {
+       cartContainer.style.display = "block";
+    } else {
+       cartContainer.style.display = "none";
+    }
+ }
+ // Mục đích:
+
+// - Hiển thị hoặc ẩn thông báo cho người dùng khi giỏ hàng trống.
+
+// Cách thực hiện:
+
+// - Hàm "toggleCart" dùng để điều khiển việc hiển thị hoặc ẩn thông báo "giỏ hàng trống" (do có id="item-list-no-cart-msg") trên trang web.
+
+// - Đoạn mã kiểm tra nếu phần tử "item-list-no-cart-msg" đang được ẩn đi (có kiểu display là "none") thì chuyển kiểu display của nó thành "block" để hiển thị. Ngược lại nếu phần tử này đang hiển thị (có kiểu display khác "none") thì chuyển kiểu display của nó thành "none" để ẩn đi thông báo.
+
+// - Hàm toggleCart có chức năng đảm bảo việc hiển thị thông báo "giỏ hàng trống" cho người dùng khi giỏ hàng không có sản phẩm nào.
+}

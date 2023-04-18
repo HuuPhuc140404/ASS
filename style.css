@@ -48,25 +48,23 @@
     margin-left:22px;
     
 }
-#actions .items :hover{
-    transform: scale(1.4);
-}
 
 #actions .item:hover .item-list{
    
     display: block!important;
     position: absolute !important;
-    background-color: #ccc;
+    background-color: #84998e !important;
+    z-index: 9999;
 }
 
 .item-list{
     display: none !important;
     position: absolute !important;
-    top:30px !important;
+    top:110px !important;
     right: 30px !important;
-    width: 1200px !important    ;
-    border-radius: 2px !important;
-    box-shadow: 0 2px 10px #ccc !important;
+    width: 500px !important    ;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 10px #71cbcd !important;
     cursor: default !important;
 }
 
@@ -83,12 +81,7 @@
     font-size: 20px;
     margin-top: 10px;
 }
-.item-list-warp{
-    
-    display:inline-block;
-    padding: 0 12px;
-    cursor: pointer;
-}
+
 
 #banner {
     width: 100%;
@@ -238,25 +231,26 @@
     font-weight: bold;
     margin-top:20px;
 }
-#listproducts .item .product-detail {
+#listproducts .item .product-detail  {
    
     text-align: center;
-    background-color: white;
-    width: 290px;
-    border: 1px solid black;
+    display: block;;
     border-radius: 10px;
     position: absolute;
-    padding: 20px;
-    margin-right: 30px    ;
+    padding: 70px;
+    margin: 10px;
+    width: 265px;
     
-    
+  }
+  #listproducts .item .product-detail button {
+    background: rgba(133, 202, 178, 0.695);
+    font-size: 20px;
+  
   }
   #listproducts .item  .product-detail :hover{
     transform: scale(1.4);
+    transition: 0.5s;
   }
-
-  
-
 
 .list-page {
     width: 50%;
